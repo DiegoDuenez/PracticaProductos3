@@ -40,7 +40,7 @@ Route::middleware('auth:sanctum')->post('/imagen', 'ApiFile\FileController@saveI
 Route::middleware('auth:sanctum')->delete('/usuarios/{id}', 'ApiAuth\UsersController@delete')->where("id","[0-9]+");
 
 //SESION
-Route::get('/activar/cuenta/{email}', 'ApiAuth\UsersController@activar');
+Route::get('/activar/cuenta/{codigo}', 'ApiAuth\UsersController@activar');
 Route::post('/registro','ApiAuth\UsersController@registro')->middleware('verificar.edad');
 Route::post('/login','ApiAuth\UsersController@login');
 Route::middleware('auth:sanctum')->delete('/logout', 'ApiAuth\UsersController@logout');

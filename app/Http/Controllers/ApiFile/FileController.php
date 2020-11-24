@@ -26,16 +26,18 @@ class FileController extends Controller
                 $user->save();
                 $user = Auth::user();
                 $accion = "Subir imagen";
-                $correo= Mail::to($request->user()->email)->send(new Autorizado($user, $accion));
+                $correo= Mail::to($request->user()->email)->send(new Autorizado($user, $accion, $path));
                 return response()->json(["Path" => $path], 201);
             }
             return response()->json(null,400);
-            
+           
         }
-        else{
+        if(! $request->user()->tokenCan("user:save") && ! $request->user()->tokenCan("user:edit") || ! $request->user()->tokenCan("admin:admin") || ! $request->user()->tokenCan("user:admim")){
+            $admin = User::where("rol","=","admin")->select("email")->get();
             $user = Auth::user();
+            $path = "";
             $accion = "Subir imagen";
-            $correotoadmin = Mail::to("19170154@uttcampus.edu.mx")->send(new SinAutorizacion($user, $accion));
+            $correotoadmin = Mail::to($admin)->send(new SinAutorizacion($user, $accion, $path));
             return abort(400, "Permisos Invalidos");
             
         }
